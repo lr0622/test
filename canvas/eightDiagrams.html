@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+	<title></title>
+	<style type="text/css">
+		#canvas{
+			/*padding: 50px;*/
+			margin: 10px;
+		}
+	</style>
+</head>
+<body>
+	<canvas id="canvas"></canvas>
+	
+<script type="text/javascript">
+	
+	const canvas = document.querySelector('#canvas');	
+	const ctx = canvas.getContext('2d');
+	const W = canvas.width = 400;
+	const H = canvas.height = 400;
+	canvas.style.boxShadow = '0 2px 4px 0 rgba(0, 0, 0, 0.2)';
+	canvas.style.backgroundColor = '#eef';
+	
+	const X = 100,Y = X;
+	
+	class Gossip{
+		constructor(x,y,r){
+			this.x = x;
+			this.y = y;
+			this.r = r;
+//			this.rem = r/250;
+			return this;
+		}
+		
+		render(ctx){
+			this.drawBack(ctx);
+			this.drawWhite(ctx);
+			this.drawWhiteSmall(ctx);
+			this.drawBackSmall(ctx);
+			this.drawWhiteMin(ctx);
+			this.drawBackMin(ctx);
+			this.drawText(ctx);
+			return this;
+		}
+		
+		drawWhite(ctx){
+			ctx.save();
+			ctx.translate(this.x+100,this.y+150);
+			ctx.beginPath();
+			ctx.arc(0,0,this.x,1.5*Math.PI,Math.PI/2,false);
+			ctx.fillStyle = '#fff';
+			ctx.closePath();
+			ctx.fill();
+			ctx.restore();
+			return this;
+		}
+		
+		drawBack(ctx){
+			ctx.save();
+			ctx.translate(this.x+100,this.y+150);
+			ctx.beginPath();
+			ctx.arc(0,0,this.x,Math.PI/2,1.5*Math.PI,false);
+			ctx.fillStyle = '#000';
+			ctx.closePath();
+			ctx.fill();
+			ctx.restore();
+			return this;
+		}
+		
+		drawWhiteSmall(ctx){
+			ctx.save();
+			ctx.translate(this.x+100,this.y-this.r/2+150);
+			ctx.beginPath();
+			ctx.arc(0,0,this.r/2,0,2*Math.PI,true);
+			ctx.fillStyle = '#fff';
+			ctx.closePath();
+			ctx.fill();
+			ctx.restore();
+			return this;
+		}
+		
+		drawBackSmall(ctx){
+			ctx.save();
+			ctx.translate(this.x+100,this.y+this.r/2+150);
+			ctx.beginPath();
+			ctx.arc(0,0,this.r/2,0,2*Math.PI,true);
+			ctx.fillStyle = '#000';
+			ctx.closePath();
+			ctx.fill();
+			ctx.restore();
+			return this;
+		}
+		
+		drawWhiteMin(ctx){
+			ctx.save();
+			ctx.translate(this.x+100,this.y-this.r/2+150);
+			ctx.beginPath();
+			ctx.arc(0,0,this.r/12,0,2*Math.PI,true);
+			ctx.fillStyle = '#000';
+			ctx.closePath();
+			ctx.fill();
+			ctx.restore();
+			return this;
+		}
+		
+		drawBackMin(ctx){
+			ctx.save();
+			ctx.translate(this.x+100,this.y+this.r/2+150);
+			ctx.beginPath();
+			ctx.arc(0,0,this.r/12,0,2*Math.PI,true);
+			ctx.fillStyle = '#fff';
+			ctx.closePath();
+			ctx.fill();
+			ctx.restore();
+			return this;
+		}
+		
+		drawText(ctx){
+			ctx.save();
+			ctx.fillStyle = '#000';
+			ctx.globalAlpha = '0.3';
+			ctx.textAlign = 'center';
+			ctx.font = '36px Arial';
+			ctx.shadowColor = 'rgba(0,0,0,0.3)';
+			ctx.shadowOffsetX = 15;
+			ctx.shadowOffsetY = -10;
+			ctx.shadowBlur = 2;
+			ctx.fillText('Hello Canavs',200,100);
+			ctx.restore();
+		}
+	}
+	
+	const gossip = new Gossip(X,Y,X).render(ctx);
+	
+	
+	
+</script>
+	
+	
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
