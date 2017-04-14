@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			body{
+				background: #d1d7c9;
+			}
+			#box{
+				width: 400px;
+				height: 300px;
+				border: 1px solid #d1d7c9;
+				background: rgba(255,255,255,75);
+				box-shadow: 1px 2px 1px rgba(0, 0, 0, 0.2);
+				margin: 50px auto;
+				padding: 40px;
+			}
+			#box .div{
+				position: relative;
+				width: 360px;
+				height: 60px;
+				line-height: 60px;
+				padding: 0 20px 0 20px;
+				color: #666;
+				font-weight: bold;
+			}
+			#box .div span{
+				width: 40px;
+				display: inline-block;
+			}
+			#box .div input{
+				width: 310px;
+				height: 30px;
+				outline:none;
+			}
+			#box .div i{
+				position: absolute;
+				font-style: normal;
+				font-weight: 100;
+				top: 4px;
+				right: 40px;
+				color: #ddd;
+				display: none;
+			}
+			#box .div i.act{
+				display: block;
+			}
+			#box .div i.active{
+				display: none;
+			}
+			#box .div input.active{
+				border:1px solid red;
+				opacity: 0.5;
+			}
+			/*#box .div input.act{
+				border:1px solid blue;
+				opacity: 0.5;
+			}*/
+			#sub{width: 100px;
+				height: 36px;
+				margin-left: 150px;
+				margin-top: 20px;
+				font-size: 18px;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<form id="box" action="">
+			<div class="div">
+				<span>QQ</span><input type="text" name="" id="" value="" /><i>√</i>
+			</div>
+			<div class="div">
+				<span>邮箱</span><input type="text" name="" id="" value="" /><i>√</i>
+			</div>
+			<div class="div">
+				<span>手机</span><input type="text" name="" id="" value="" /><i>√</i>
+			</div>
+			<div class="div">
+				<span>生日</span><input type="text" name="" id="" value="" /><i>√</i>
+			</div>
+			<input type="button" id="sub" value="提交" />
+		</form>
+		
+	</body>
+</html>
+<script type="text/javascript">
+	var oBox = document.getElementById('box');
+	var aInp = oBox.getElementsByTagName('input');
+	var aI = oBox.getElementsByTagName('i');
+	var oSub = document.getElementById('sub');
+
+//qq
+	var fnQq = () =>{
+		var val = aInp[0].value;
+		if(/^[1-9]\d{4,10}$/.test(val)){
+			aInp[0].className = '';
+			aI[0].className = 'act';
+		}else{
+			aInp[0].className = 'active';			
+		}
+	}
+//邮箱
+	var fnEmail = () =>{
+		var val = aInp[1].value;
+		if(/^[1-9a-z][0-9a-z_]{4,14}[^_]@[a-z0-9]{2,5}\.(com|cn|qq)$/.test(val)){
+			aInp[1].className = '';
+			aI[1].className = 'act';	
+		}else{
+			aInp[1].className = 'active';	
+		}
+	}
+//手机
+	var fnPhone = () =>{
+		var val = aInp[2].value;
+		if(/^1[3578][0-9]{9}$/.test(val)){
+			aInp[2].className = '';
+			aI[2].className = 'act';	
+		}else{
+			aInp[2].className = 'active';	
+		}
+	}
+	
+//身份证
+	
+//生日
+	var fnBirth = () =>{
+		var val = aInp[3].value;
+		var onOff = false;
+		var re = new RegExp('^([0-9]{4})\\D([0-9]{1,2})\\D([0-9]{1,2})$');
+//		var re = /^([0-9]{4})\D([0-9]{1,2})\D([0-9]{1,2})$/;
+//		var re = /\d+\D+\d+\D+\d+\D?$/
+		val.replace(re,function($0,$1,$2,$3){
+			console.log($1,$2,$3)
+			var y = $1;//输入的年月日
+			var m = $2;
+			var d = $3;
+			
+			var oDate = new Date();//获取当前年月日
+			var y1 = oDate.getFullYear();
+			var m1 = oDate.getMonth() + 1;
+			var d1 = oDate.getDate();
+			
+			if (y > y1) {
+				onOff = false;
+			} else if (y == y1){
+				
+				if ( m == 0 || m > m1 ) {
+					onOff = false;
+				} else if(m<m1){
+					var data1 = new Date();
+						data1.setFullYear(y);//设置年份为所输入的年份
+						data1.setMonth(m);//设置月份为所输入的月份
+						
+						data1.setMonth(data1.getMonth());
+						data1.setDate(0);//所设置月份有多少天
+													
+					var t = data1.getDate();//获取设置月份的天数
+					if ( d > t || d == 0 ) {
+						onOff = false;
+					} else {
+						onOff = true;
+					}
+					
+				}else if(m==m1){
+					if ( d > d1 || d == 0 ) {
+						onOff = false;
+					} else {
+						onOff = true;
+					}
+				}
+				
+			} else {
+				
+				if ( y < 1900 ) {
+					onOff = false;
+				} else {
+					if ( m == 0 || m > 12 ) {
+						onOff = false;
+					} else {
+						
+						var data1 = new Date();
+							data1.setFullYear(y);//设置年份为所输入的年份
+							data1.setMonth(m);//设置月份为所输入的月份
+							
+							data1.setMonth(data1.getMonth());
+							data1.setDate(0);//所设置月份有多少天
+														
+						var t = data1.getDate();//获取设置月份的天数
+						
+						if ( d > t || d == 0 ) {
+							onOff = false;
+						} else {
+							onOff = true;
+						}
+					}
+				}
+				
+			}
+			
+		})
+	
+		if (onOff) {
+			aInp[3].className = '';
+			aI[3].className = 'act';
+		} else {
+			aInp[3].className = 'active';
+		}
+	}
+
+//提交
+	var fnSub = () =>{
+		for(var i=0;i<aInp.length-1;i++){
+			if(aI[i].className !== 'act'){
+				return;
+			}else {
+				window.open('http://www.baidu.com/','_self');
+			}
+		}
+		aInp[i].innerHTML = '';
+	}
+		
+	
+	
+	aInp[0].addEventListener('input',fnQq);
+	aInp[1].addEventListener('input',fnEmail);
+	aInp[2].addEventListener('input',fnPhone);
+	aInp[3].addEventListener('input',fnBirth);
+	oSub.addEventListener('click',fnSub);
+	
+	var newDate = +new Date;//现在的时间戳
+	
+	
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

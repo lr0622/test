@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title></title>
+		<style>
+			ul{
+				list-style: none;
+			}
+			#oUl ul{
+				display: none;
+			}
+			h3{
+				font-weight: normal;
+			}
+		</style>
+
+	</head>
+
+<body>
+	<ul id="oUl">
+		<li>
+			<h3>+第一级</h3>
+			<ul>
+				<li>
+					<h3>+第二级</h3>
+					<ul>
+						<li>
+							<h3>+第三级</h3>
+							<ul>
+								<li>
+									<h3>第四级</h3>
+								</li>
+								<li>
+									<h3>第四级</h3>
+								</li>
+								<li>
+									<h3>第四级</h3>
+								</li>
+							</ul>
+						</li>
+						<li>
+							<h3>第三级</h3>
+						</li>
+						<li>
+							<h3>第三级</h3>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<h3>+第二级</h3>
+					<ul>
+						<li>
+							<h3>+第三级</h3>
+							<ul>
+								<li>
+									<h3>第四级</h3>
+								</li>
+								<li>
+									<h3>第四级</h3>
+								</li>
+								<li>
+									<h3>第四级</h3>
+								</li>
+							</ul>
+						</li>
+						<li>
+							<h3>第三级</h3>
+						</li>
+						<li>
+							<h3>第三级</h3>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<h3>第二级</h3>
+				</li>
+			</ul>
+		</li>
+		<li>
+			<h3>+第一级</h3>
+			<ul>
+				<li>
+					<h3>+第二级</h3>
+					<ul>
+						<li>
+							<h3>+第三级</h3>
+							<ul>
+								<li>
+									<h3>第四级</h3>
+								</li>
+								<li>
+									<h3>第四级</h3>
+								</li>
+							</ul>
+						</li>
+						<li>
+							<h3>第三级</h3>
+						</li>
+						<li>
+							<h3>第三级</h3>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<h3>第二级</h3>
+				</li>
+				<li>
+					<h3>第二级</h3>
+				</li>
+			</ul>
+		</li>
+		<li>
+			<h3>+第一级</h3>
+			<ul>
+				<li>
+					<h3>+第二级</h3>
+					<ul>
+						<li>
+							<h3>+第三级</h3>
+							<ul>
+								<li>
+									<h3>第四级</h3>
+								</li>
+								<li>
+									<h3>第四级</h3>
+								</li>
+								<li>
+									<h3>第四级</h3>
+								</li>
+							</ul>
+						</li>
+						<li>
+							<h3>+第三级</h3>
+							<ul>
+								<li>
+									<h3>第四级</h3>
+								</li>
+								<li>
+									<h3>第四级</h3>
+								</li>
+								<li>
+									<h3>第四级</h3>
+								</li>
+							</ul>
+						</li>
+						<li>
+							<h3>第三级</h3>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<h3>第二级</h3>
+				</li>
+				<li>
+					<h3>第二级</h3>
+				</li>
+			</ul>
+		</li>
+		<li>
+			<h3>+第一级</h3>
+			<ul>
+				<li>
+					<h3>+第二级</h3>
+					<ul>
+						<li>
+							<h3>+第三级</h3>
+							<ul>
+								<li>
+									<h3>第四级</h3>
+								</li>
+								<li>
+									<h3>第四级</h3>
+								</li>
+								<li>
+									<h3>第四级</h3>
+								</li>
+							</ul>
+						</li>
+						<li>
+							<h3>+第三级</h3>
+							<ul>
+								<li>
+									<h3>第四级</h3>
+								</li>
+								<li>
+									<h3>第四级</h3>
+								</li>
+								<li>
+									<h3>第四级</h3>
+								</li>
+							</ul>
+						</li>
+						<li>
+							<h3>第三级</h3>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<h3>第二级</h3>
+				</li>
+				<li>
+					<h3>第二级</h3>
+				</li>
+			</ul>
+		</li>
+	</ul>
+</body>
+<script>
+	
+	var oUl = document.getElementById('oUl');
+	var aH = oUl.getElementsByTagName('h3');
+
+	for(var i=0;i<aH.length;i++){
+
+		aH[i].onclick = function(){
+		
+			var next = this.nextElementSibling; 
+			
+			if(next){
+				var aUl = next.getElementsByTagName('ul');
+				if(next.onOff){
+					next.style.display = '';
+					for(var i=0;i<aUl.length;i++){
+						aUl[i].style.display = '';
+						aUl[i].onOff = false;
+					}
+					next.onOff = false;
+				}else{
+					next.style.display = 'block';
+					next.onOff = true;
+				}
+				
+			
+			}	
+		}
+	}
+
+</script>
+</html>

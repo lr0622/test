@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title></title>
+		<style>
+			#oUl li ul{
+				display: none;
+			}
+			#oUl li ul.show{
+				display: block;
+			}
+			#oUl li ul.hide{
+				display: none;
+			}
+			#oUl li h3 span{
+				padding: 0px 10px;
+			}
+			#oUl li h3.padL{
+				padding-left: 30px;
+			}
+			li{
+				list-style: none;
+			}
+			h3{
+				font-weight: normal;
+			}
+		</style>
+
+	</head>
+
+<body>
+	<ul id="oUl"></ul>
+</body>
+<script>
+var arr = [
+{
+    title : "第一级菜单1",
+    child : [
+    	{title:"第二级菜单1"},
+        {title:"第二级菜单2",
+        child:[
+        		{title:"第三级菜单1"},
+        		{title:"第三级菜单2",
+        		child:[
+        			{title:"第四级菜单1"},
+        			{title:"第四级菜单2"},
+        			{title:"第四级菜单3"}
+        		]
+        		},
+        		{title:"第三级菜单3"}
+        	]
+    	},
+        {
+        	title:"第二级菜单3",
+        	child:[
+        		{title:"第三级菜单1"},
+        		{title:"第三级菜单2"}
+        	]
+        }
+    ]
+},
+{
+    title : "第一级菜单2",
+    child : [
+    	{title:"第二级菜单1"},
+        {title:"第二级菜单2",
+        child:[
+        		{title:"第三级菜单1"},
+        		{title:"第三级菜单2",
+        		child:[
+        			{title:"第四级菜单1"},
+        			{title:"第四级菜单2"},
+        			{title:"第四级菜单3"}
+        		]
+        		},
+        		{title:"第三级菜单3"}
+        	]
+    	},
+        {
+        	title:"第二级菜单3",
+        	child:[
+        		{title:"第三级菜单1"},
+        		{title:"第三级菜单2"}
+        	]
+        }
+    ]
+},
+{
+	title:"第一级菜单3",
+	child:[
+		{title:"第二级菜单1"},
+		{title:"第二级菜单2"}
+	]
+},
+];
+	
+	var oUl = document.getElementById('oUl');
+	
+	fnTree(oUl,arr);
+	function fnTree(obj,arr){
+		arr.forEach(function(e,i,all){
+			var li = document.createElement('li');
+			var h3 = document.createElement('h3');
+			var span = document.createElement('span');
+			
+			for(var attr in e){
+				h3.innerHTML = e['title'];
+				h3.appendChild(span)
+				li.appendChild(h3)
+				if(attr === 'child'){
+					span.innerHTML = '+';
+					var ul = document.createElement('ul');
+					fnTree(ul,e['child']);
+					li.appendChild(ul);
+				}
+			}
+			li.addEventListener('click',fnClick);
+			
+			function fnClick(ev){
+				var ul = this.children[1];
+				if(ul){
+					if(ul.className != 'show'){
+						ul.className = 'show';
+						span.innerHTML = '-';
+					}else{
+						ul.className = 'hide';
+						span.innerHTML = '+';
+					}
+				}
+				var parent = this.parentNode;
+				var lis = parent.children;
+				for(var i=0;i<lis.length;i++){
+					if(lis[i] != this){//lis[i]等于this的兄弟节点
+						var uls = lis[i].getElementsByTagName('ul');//要关闭的ul
+						for (var j=0;j<uls.length;j++) {
+							uls[j].className = 'hide';
+							uls[j].previousElementSibling.getElementsByTagName('span')[0].innerHTML = '+';
+						}
+					}
+				}
+				ev.cancelBubble = true;
+			}
+			
+			obj.appendChild(li);
+	
+			
+			
+			
+		})
+		
+	}
+
+
+
+
+</script>
+</html>
