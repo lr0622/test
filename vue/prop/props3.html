@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style></style>
+	<script src="./vue.js"></script>
+</head>
+<body>
+	<div id="app">
+		<h3>父组件也用了count</h3>
+		<p>{{count}}</p>
+		<custom-component :cou="count" @increment-click="countHandle"></custom-component>
+	</div>
+	<script>
+		//全局组件
+		//cou传入的类型味Number
+		Vue.component('custom-component',{
+			// props:['cou'],
+			props:{
+				cou:{//验证
+					// type:Number,
+					// type:[Number,String],
+					
+					// default:10,//默认
+					// required:true//必传
+					validator:function(value){
+
+						return value>10;
+					}
+				}
+			},
+			data(){
+				return {
+					incrementCount:this.cou //1.作为局部组件的data初始值
+				}
+			},
+			computed:{
+				incrementCount2(){//1->2.计算属性
+					return this.incrementCount;
+				}
+			},
+			template:`<div><h2>自定义标签</h2>
+				<input type="button" value="改变cou的值" @click="changeCou"></input>
+				{{incrementCount2}}
+			</div>`,
+			methods:{
+				changeCou(){
+					// this.cou++;//报错
+					this.incrementCount++;
+					this.$emit('increment-click')//通知父组件发生了改变
+				}
+			}
+		})
+
+		new Vue({
+			el:'#app',
+			data:{
+				count:20
+			},
+			methods:{
+				countHandle(){
+					// alert('1')
+					this.count++;
+				}
+			}
+		})
+	</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

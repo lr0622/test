@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src='./vue.js'></script>
+</head>
+<body>
+	<!-- 模板 -->
+	<div id="demo">
+		<span v-bind:cutomId='id'>{{message}}</span>
+	</div>
+	<script>
+		//数据
+		let obj = {
+			message:'hello,Vue!',
+			id:'123'
+		}
+
+		//Vm实例    //声明式渲染
+		var vm = new Vue({
+			el:'#demo',//挂载元素
+			data:obj
+		});
+
+		console.log(vm.$data)
+
+
+	</script>
+
+</body>
+</html>
+<script>
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+

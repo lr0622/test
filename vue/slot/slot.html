@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style></style>
+	<script src="./vue.js"></script>
+</head>
+<body>
+	<div id="app">
+		<h2>自定义组件</h2>
+		<custom>
+		<!-- 写在自定义标签之间的内容 要混合子组件中的模板 -->
+			<div slot="one">1111111</div>
+			<div slot="three">3333333</div>
+			<!-- 批量插入 -->
+			<template slot="two">
+				<div>2222222</div>
+				<div>2222222</div>
+				<div>2222222</div>
+				<div>2222222</div>
+			</template>
+			<!-- 渲染的数据为父组件数据 -->
+			{{message}}
+		</custom>
+	</div>
+	<script>
+		//定制模板
+		Vue.component('custom',{
+			data(){
+				return {
+					message:"子组件数据"
+				}
+			},
+			template:`<div>
+						<slot name="one"><p>第一个提醒</p></slot>
+						<slot name="two"><p>第二个提醒</p></slot>
+						<slot name="three"><p>第三个提醒</p></slot>	
+						<slot></slot>
+						{{message}}
+					</div>`
+		})
+
+		new Vue({
+			el:"#app",
+			data:{
+				message:"父组件数据"
+			}
+		})
+
+	</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

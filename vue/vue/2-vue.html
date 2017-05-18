@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src='./vue.js'></script>
+</head>
+<body>
+	<!-- 模板 -->
+	<div id="demo">
+		<span v-on:click='clickHandle'>{{message}}</span>
+	</div>
+	<script>
+		//数据
+		let obj = {
+			message:'hello,Vue!'
+		}
+
+		//Vm实例
+		var vm = new Vue({
+			el:'#demo',//挂载元素
+			data:obj,
+			methods:{
+				clickHandle(){
+					console.log('click');
+				}
+			}
+		});
+
+		console.log(vm.$data)
+
+
+	</script>
+
+</body>
+</html>
+<script>
+/*
+1.渐进式框架Vue
+2.两个核心点
+	响应的数据绑定
+		当数据发生改变时，自动更新视图
+		利用Object.definedProperty中的setter/getter代理数据，监控对数据的操作
+
+	组合的视图组件
+		ui页面映射为组件树
+		划分组件可维护、可重用、可测试
+3.虚拟DOM
+	运行js的速度很快，但大量的操作DOM就会很慢，更新数据时会重新渲染页面，没有改变数据的地方也重新渲染了DOM节点，造成很大的浪费
+	利用在内存中生成与真实DOM与之对应的数据结构，称之为虚拟DOM
+	当数据发生变化时，能够智能地计算出重新渲染组件的最小代价并应用到DOM操作上
+	                                        
+	模板
+		编译->Render Function
+			抽离->虚拟DOM树
+				创建->真实DOM树
+
+4.MVVM模式  核心：数据模型数据双向绑定
+	M：Model 数据模型
+	V: View 视图模型
+	VM：ViewModel 
+		View和Model之间没有联系
+		Model和ViewModel之间的交互是双向的
+		View的变动，自动反映在 ViewModel，反之亦然
+		例如：
+		//html
+			<div id="demo">
+				<input type="text" v-model="message"/> 
+				<p>{{message}}</p>
+			</div>
+		//js
+			let data = {
+				message:'hello,Vue!'
+			}
+			var vm = new Vue({
+				el:'#demo',
+				data:data
+			});
+		//input框value值发生改变，p标签的内容也随之改变
+
+5.Vue实例
+6.声明式渲染
+	声明式
+		只需要声明在哪里(where)做什么(what),而无需关心如何实现(how)
+
+	命令式
+		需要以具体代码表达在哪里(where)做什么(what),如何实现(how)
+		例子：求数组中每一项的倍数 var arr = [1,2,3,4,5];
+			命令式
+				使用for循环拿出每一项，然后求知完成后，再放入到另一数组中
+				var newArr = [];
+				for(var i=0;i<arr.length;i++){
+					newArr.push(arr[i]*2)
+				}
+
+			声明式
+				使用map方法，关注如何求值
+				var newArr = arr.map(function(item){
+					return item*2;
+				})
+
+	vue声明式渲染
+		初始化根实例，vue自动将数据绑定在DOM模板上
+
+7.指令
+	指令：一种特殊的自定义行间属性
+	指令的职责：当其表达式的值改变时，相应地将某些行为应用到DOM上
+	在vue中，指令以v-开头
+	
+	vue内置指令
+		v-bind    动态的绑定数据。简写为 :
+		v-on      绑定事件监听器。简写为 @
+		v-text    更新数据，会覆盖已有结构
+		v-html    解析数据中的html结构
+		v-show    根据值的真假，切换元素的display属性
+		v-if      根据值的真假，切换元素会被销毁、重建
+		v-else-if 多条件判断，为真则渲染
+		v-else    条件都不符合渲染
+		v-for     基于源数据多次渲染元素或模板块
+		v-model   在表单控件元素上创建双向数据绑定
+		v-pre     跳过元素和子元素的编译过程
+		v-once    只渲染一次，随后数据更新不重新渲染
+		v-cloak   隐藏未编译的Mustache语法，css中设置[v-cloak]{display:none}
+
+
+8.模板
+	html模板
+		基于DOM的模板，模板都是可解析的有效HTML
+	插值
+		文本：使用Mustache语法，双大括号，{{value}}
+			作用：替换实例上的属性值，当值改变时，插值内容处会自动更新
+		原生的html：双大括号输出的是文本，不会解析html
+		属性：使用v-bind进行绑定，可以响应变化
+		使用JavaScript表达式：写简单的表达式
+
+	字符串模板
+		template字符串
+			template选项对象的属性
+			模板将会替换挂载的元素，挂载元素的内容都将被忽略
+			根节点只能有一个
+			将html结构写在一对script标签中，设置type='x-template'
+
+	模板-render函数
+		render函数
+			render 选项对象的属性
+			createElement(标签名,[数据对象],子元素)
+				子元素为文本或数组
+
+		数据对象属性
+			class:{},    绑定class，和`v-bind:class`一样的 API
+			style:{},    绑定样式，和`v-bind:style`一样的 API
+			attrs:{},    添加行间属性
+			domProps:{}, DOM元素属性
+			on:{}		 绑定事件
+
+			nativeOn:{},    监听原生事件
+			directives:{},  自定义指令
+			scopedSlots:{}, slot作用域
+			slot:{},        定义slot名称
+			key:'key',      给元素添加唯一标示
+			ref:'ref'		引用信息
+
+
+
+列表渲染
+	v-for指令
+		根据一组数组的选项列表进行渲染
+		语法：
+			value,key in items
+			value,key of items
+		变异方法
+			vue提供一组方法，对数组进行操作时，会触发视图更新
+			push() pop() shift() unshift()
+			splice() sort() reverse()
+
+事件处理器
+	v-on指令
+		用来监听DOM事件触发代码
+		语法：v-on:eventName="eventHandle"
+		指令简写：
+			@
+		事件处理函数
+			写在methods中统一管理
+		事件对象
+			在事件处理函数中获取
+			内联事件处理函数执行，传入事件对象
+				$event
+		事件修饰符
+			事件处理函数只有纯粹的逻辑判断，不处理DOM事件的细节
+			例如：阻止冒泡、取消默认行为、判断按键
+
+			修饰符位置：
+				v-on:eventName.修饰符
+			修饰符：
+				.stop .prevent .capture .self .once
+			按键修饰符：
+				.enter .tab .delete .esc 
+				.space .up .down .left .right
+				.ctrl .alt .shift .meta
+				.键值
+
+条件渲染
+	v-show指令
+		根据表达式的值，用来显示/隐藏元素
+		语法：v-show="表达式"
+		元素会被渲染在页面中，只根据表达式的值进行css切换
+
+自定义指令
+	除了vue内置的指令，可以自己设置指令
+	选项对象的directives属性
+	{
+		directives:{}
+	}
+	钩子函数：
+		update被绑定元素所在的模板更新时调用
+		钩子函数中的参数：
+			el:指令所绑定的元素，可以用来直接操作DOM
+			binding:一个对象
+				value:指令的绑定值
+
+计算属性
+	模板是为了描述视图的结构，模板中放入太多逻辑，导致模板过重且难以维护。
+	在计算一个计算属性时，Vue.js更新它的依赖列表并缓存结果，只有当其中一个依赖发生了变化，缓存的结果才无效。
+	语法：
+		在选项对象中
+		{
+			...
+			computed:{}
+		}
+
+
+组件化开发
+	组件？
+	web中的组件其实就是页面组成的一部分，好比是电脑中的每一个元件，它是一个具有独立的逻辑和功能或界面，同时又能根据规定的接口规则进行相互融合，变成一个完整的应用。
+
+	页面就是由一个个类似这样的部分组成，比如导航、列表、弹窗、下拉菜单等，页面就是这些组件的容器，组件自由组合形成功能完整的界面，当不需要某个组件，或者想要替换某个组件时，可以随时进行替换和删除，而不影响整个应用的运行。
+
+	前端组件化的核心思路就是将一个巨大复杂的东西拆分成粒度合理的小东西。
+
+	好处？
+		提高开发效率
+		方便重复使用
+		简化调试步骤
+		提升整个项目的可维护性
+		便于协同开发
+
+	vue中的组件
+		vue中的组件是一个自定义标签，Vue.js的编译器为它添加特殊功能
+		vue也可以扩展原生的html元素，封装可重用的代码
+
+		组件的基本组成：
+			样式结构
+			行为逻辑
+			数据
+
+		注册组件
+			全局注册
+				可以在任何模板中使用，使用之前要先注册
+				语法：使用Vue.component(组件名，选项对象)
+				组件名命名约定：
+					驼峰(camelCase)、烤串(kebab-case)
+				在html中使用组件：
+					使用烤串(kebab-case)命名法
+				例如：注册：Vue.component('my-component',{})
+						使用：<my-component></my-component>
+			局部注册
+				在组件实例中通过选项对象注册，只在所注册的作用域中使用
+				{
+					components:{
+						组件名：选项对象
+					}
+				}
+
+		组件间通信
+			父组件给子组件传递数据，子组件需要将它内部发生的事情告知父组件
+
+			父组件->子组件  Pass/Props
+				组件实例的作用域是孤立的，不能在子组件直接用父组件的数据。
+				可以在组件上使用自定义属性绑定数据，在组件中需要显示的用props声明自定义属性名。
+			子组件->父组件  Emit/Events
+				需要用到自定义事件，父组件用$on监听自定义事件，$emit触发父组件所关心的自定义事件。
+
+		组件中的data必须是函数
+			每个组件都是相互独立的，如果让他共用一个对象，在更改一个组件数据的时候，会影响其他组件。如果是函数的话，每个组件都有自己独立的数据，相互之间不会影响。
+
+		受限制的元素
+			DOM模板解析
+			Vue是在浏览器解析和标准化HTML后才能获取模板内容，所以有些元素限制了能被它包裹的元素。
+			例如：ul中只能放li;select中只能放option.
+			某些元素中放入了自定义元素，不符合W3C标准，最终会解析错误。
+			变通的方式是使用特殊属性is来扩展HTML标签功能。
+
+
+	单向数据流
+		数据从父组件流向子组件，只能单向绑定。
+		在子组件内部不应该修改父组件传递过来的数据。
+
+		改变prop的情况：
+			1.作为data中局部数据的初始值使用
+			2.作为子组件中的computed树属性
+			
+
+	Props验证
+		组件可以为props指定验证要求。如果未指定验证要求，Vue会发出警告。
+		props:{
+			propA:Number,//指定类型
+			propB:[String,Number],//多种类型
+			propC:{type:String,required:true},//必传，且为字符串
+			propD:{type:Number,default:100},//字符串类型，默认值为100
+			propE:{type:Number,default:function(){return 1000}},
+			//自定义验证规则
+			propF:{validator:function(value){return > 10}}
+		}
+		验证类型为原生构造器：
+			String,Number,Function,Object,Boolean,Array
+
+
+	非父子间通信
+		可以把Vue实例作为中央事件总线(central event bus)
+		这种方式组件嵌套的较多，数据要改动，会越来越复杂，所以考虑使用专门的状态管理模式(vueX)
+
+
+	使用slot分发内容
+		使用一种方式混合父组件的内容与子组件自己的模板。这个过程被称作“内容分发”。在子组件中使用特殊的<slot>元素作为内容的插槽。
+		这样会使组件的可扩展性更强。
+
+		单个slot：
+			在子组件模板中有slot标签，被视为备用内容，在父组件不提供内容的情况下使用。如果父组件提供内容，则把整个内容片段插入到slot所在的DOM位置，并替换掉slot标签本身。
+			子组件模板中没有slot标签，父组件提供的内容会被抛弃。
+		具名slot:
+			<slot>元素可以用一个特殊的属性 name 来配置如何分发内容。
+			可以使用一个匿名的slot，处理那些没有对应slot的内容。
+		编译作用域
+			父组件模板的内容在父组件作用域内编译；
+			子组件模板的内容在子组件作用域内编译。
+
+	
+	封装组件
+		每个组件会提供一些标准且简单的应用接口，允许使用者设置和调整参数和属性。
+		可以将不同来源的多个组件有机地结合在一起，快速构成一个符合实际需求的复杂(大型)应用程序。
+
+		组件的主要特点：
+			重用性    -- 能够公用和通用
+			可定制性  -- 设置参数和属性
+			高内聚性  -- 功能完整
+			互操作性  -- 多组件协同工作
+
+		Vue组件的API来自三部分
+			props参数  -- 传递数据给组件
+			slot定制模板  -- 外部模板混合子组件模板
+			event自定义事件  -- 监控子组件交互状态
+
+	动态组件
+		多个组件可以使用同一个挂载点，动态地在它们之间切换。
+		使用保留的<component>元素，使用is特性进行动态绑定
+		可以使用keep-alive把切出去的组件保留在内存中，这样可以保留它的状态，避免重新渲染。
+
+
+
+ */
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		.red{
+			color: red;
+		}
+		.fs{
+			font-size: 50px;
+		}
+		.bg{
+			background: yellow;
+		}
+	</style>
+	<script src='./vue.js'></script>
+</head>
+<body>
+	<!-- 模板 -->
+	<div id="demo">
+		<!-- <span class="fontSize" :class='{red:addClass}'>hello,world</span> -->
+
+	</div>
+	<script>
+		let obj = {
+			html:'<div>hello,miaov</div>',
+			abc:1
+		}
+		var vm = new Vue({
+			el:'#demo',//挂载元素
+			data:obj,
+			render(createElement){
+				return createElement(
+					'ul',
+					{
+						class:{
+							bg:true,
+							// fs:true
+						},
+						style:{
+							fontSize:'30px'
+						},
+						attrs:{
+							abc:'miaov'
+						},
+						domProps:{//改元素innerHTML结构，谨慎使用
+							innerHTML:'<li>我是html</li>'
+						}
+					},
+					[
+						createElement('li',1),
+						createElement('li',2),
+						createElement('li',3)
+					]
+
+				);
+			}
+		});
+
+
+	</script>
+
+</body>
+</html>
+<script>
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
